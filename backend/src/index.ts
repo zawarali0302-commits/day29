@@ -47,20 +47,28 @@ const Teacher = mongoose.model('Teacher', teachers);
 
 
 
-app.post('/teachers',express.json(), (req,res)=>{
+app.post('/teachers',express.json(), async (req,res)=>{
     const newTeacher = new Teacher({
         name: req.body.name,
         subject: req.body.subject,
         yearsOfExperience: req.body.yearsOfExperience,
         salary: req.body.salary,
     });
-    newTeacher.save()
-        .then(teacher => {
-            res.status(201).send(teacher);
-        })
-        .catch(err => {
-            res.status(500).send(err);
-        })
+
+    try {
+        const teacher1 = await newTeacher.save();
+        res.send(teacher1)
+    } catch (error) {
+        res.status(500).send("Error creating employee")
+    }
+
+    // newTeacher.save()
+    //     .then(teacher => {
+    //         res.status(201).send(teacher);
+    //     })
+    //     .catch(err => {
+    //         res.status(500).send(err);
+    //     })
 });
 
 
